@@ -215,8 +215,14 @@ namespace TMP
 
             playlist.Items.Clear();
 
-            File.Delete(index);
-            File.Delete(list);
+            if (File.Exists(index))
+            {
+                File.Delete(index);
+            }
+            if (File.Exists(list))
+            {
+                File.Delete(list);
+            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

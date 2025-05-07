@@ -22,23 +22,8 @@ namespace TMP
         private bool is_queue;
         private bool is_autorepeat;
 
-        #region rectangles
-
         private Size orgSize;
-
-        Rectangle loadRect;
-        Rectangle playRect;
-        Rectangle pauseRect;
-        Rectangle volRect;
-        Rectangle listRect;
-        Rectangle titleRect;
-        Rectangle timeRect;
-        Rectangle curTimeRect;
-        Rectangle durRect;
-        Rectangle slashRect;
-        Rectangle picRect;
-
-        #endregion
+        Rectangle[] rects = new Rectangle[11];
         public TMP()
         {
             InitializeComponent();
@@ -88,17 +73,17 @@ namespace TMP
             #region rectangles
 
             orgSize = this.Size;
-            loadRect = new Rectangle(loadButton.Location, loadButton.Size);
-            playRect = new Rectangle(playButton.Location, playButton.Size);
-            pauseRect = new Rectangle(pauseButton.Location, pauseButton.Size);
-            volRect = new Rectangle(Volume.Location, Volume.Size);
-            listRect = new Rectangle(playlist.Location, playlist.Size);
-            titleRect = new Rectangle(title.Location, title.Size);
-            timeRect = new Rectangle(time.Location, time.Size);
-            curTimeRect = new Rectangle(curTime.Location, curTime.Size);
-            durRect = new Rectangle(dur.Location, dur.Size);
-            slashRect = new Rectangle(slash.Location, slash.Size);
-            picRect = new Rectangle(pictureBox1.Location, pictureBox1.Size);
+            rects[0] = new Rectangle(loadButton.Location, loadButton.Size);
+            rects[1] = new Rectangle(playButton.Location, playButton.Size);
+            rects[2] = new Rectangle(pauseButton.Location, pauseButton.Size);
+            rects[3] = new Rectangle(Volume.Location, Volume.Size);
+            rects[4] = new Rectangle(playlist.Location, playlist.Size);
+            rects[5] = new Rectangle(title.Location, title.Size);
+            rects[6] = new Rectangle(time.Location, time.Size);
+            rects[7] = new Rectangle(curTime.Location, curTime.Size);
+            rects[8] = new Rectangle(dur.Location, dur.Size);
+            rects[9] = new Rectangle(slash.Location, slash.Size);
+            rects[10] = new Rectangle(pictureBox1.Location, pictureBox1.Size);
 
             #endregion
 
@@ -164,17 +149,17 @@ namespace TMP
 
         private void Msplayer_Resize(object sender, EventArgs e)
         {
-            resize(loadButton, loadRect);
-            resize(playButton, playRect);
-            resize(pauseButton, pauseRect);
-            resize(Volume, volRect);
-            resize(playlist, listRect);
-            resize(title, titleRect);
-            resize(time, timeRect);
-            resize(curTime, curTimeRect);
-            resize(dur, durRect);
-            resize(slash, slashRect);
-            resize(pictureBox1, picRect);
+            resize(loadButton, rects[0]);
+            resize(playButton, rects[1]);
+            resize(pauseButton, rects[2]);
+            resize(Volume, rects[3]);
+            resize(playlist, rects[4]);
+            resize(title, rects[5]);
+            resize(time, rects[6]);
+            resize(curTime, rects[7]);
+            resize(dur, rects[8]);
+            resize(slash, rects[9]);
+            resize(pictureBox1, rects[10]);
         }
 
         private void resize(Control c, Rectangle r)
@@ -215,14 +200,17 @@ namespace TMP
 
             playlist.Items.Clear();
 
-            if (File.Exists(index))
+            try
             {
                 File.Delete(index);
             }
-            if (File.Exists(list))
+            catch (FileNotFoundException) { }
+
+            try
             {
                 File.Delete(list);
             }
+            catch (FileNotFoundException) { }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

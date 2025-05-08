@@ -49,6 +49,17 @@
             queueToolStripMenuItem = new ToolStripMenuItem();
             autorepeatToolStripMenuItem = new ToolStripMenuItem();
             timer1 = new System.Windows.Forms.Timer(components);
+            colorsToolStripMenuItem = new ToolStripMenuItem();
+            sizeToolStripMenuItem = new ToolStripMenuItem();
+            defaultToolStripMenuItem = new ToolStripMenuItem();
+            bigToolStripMenuItem = new ToolStripMenuItem();
+            smallToolStripMenuItem = new ToolStripMenuItem();
+            redToolStripMenuItem = new ToolStripMenuItem();
+            yellowToolStripMenuItem = new ToolStripMenuItem();
+            greenToolStripMenuItem = new ToolStripMenuItem();
+            blueToolStripMenuItem = new ToolStripMenuItem();
+            pinkToolStripMenuItem = new ToolStripMenuItem();
+            whiteToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)Volume).BeginInit();
             ((System.ComponentModel.ISupportInitialize)time).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -184,9 +195,9 @@
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { clearToolStripMenuItem, deleteToolStripMenuItem, saveToolStripMenuItem, loadToolStripMenuItem, queueToolStripMenuItem, autorepeatToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { clearToolStripMenuItem, deleteToolStripMenuItem, saveToolStripMenuItem, loadToolStripMenuItem, queueToolStripMenuItem, autorepeatToolStripMenuItem, colorsToolStripMenuItem, sizeToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(134, 136);
+            contextMenuStrip1.Size = new Size(134, 180);
             // 
             // clearToolStripMenuItem
             // 
@@ -234,6 +245,83 @@
             // 
             timer1.Tick += timer1_Tick;
             // 
+            // colorsToolStripMenuItem
+            // 
+            colorsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { redToolStripMenuItem, yellowToolStripMenuItem, greenToolStripMenuItem, blueToolStripMenuItem, pinkToolStripMenuItem, whiteToolStripMenuItem });
+            colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
+            colorsToolStripMenuItem.Size = new Size(133, 22);
+            colorsToolStripMenuItem.Text = "Colors";
+            // 
+            // sizeToolStripMenuItem
+            // 
+            sizeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { defaultToolStripMenuItem, bigToolStripMenuItem, smallToolStripMenuItem });
+            sizeToolStripMenuItem.Name = "sizeToolStripMenuItem";
+            sizeToolStripMenuItem.Size = new Size(133, 22);
+            sizeToolStripMenuItem.Text = "Size";
+            // 
+            // defaultToolStripMenuItem
+            // 
+            defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
+            defaultToolStripMenuItem.Size = new Size(180, 22);
+            defaultToolStripMenuItem.Text = "Default";
+            defaultToolStripMenuItem.Click += defaultToolStripMenuItem_Click;
+            // 
+            // bigToolStripMenuItem
+            // 
+            bigToolStripMenuItem.Name = "bigToolStripMenuItem";
+            bigToolStripMenuItem.Size = new Size(180, 22);
+            bigToolStripMenuItem.Text = "Big";
+            bigToolStripMenuItem.Click += bigToolStripMenuItem_Click;
+            // 
+            // smallToolStripMenuItem
+            // 
+            smallToolStripMenuItem.Name = "smallToolStripMenuItem";
+            smallToolStripMenuItem.Size = new Size(180, 22);
+            smallToolStripMenuItem.Text = "Small";
+            smallToolStripMenuItem.Click += smallToolStripMenuItem_Click;
+            // 
+            // redToolStripMenuItem
+            // 
+            redToolStripMenuItem.Name = "redToolStripMenuItem";
+            redToolStripMenuItem.Size = new Size(180, 22);
+            redToolStripMenuItem.Text = "Red";
+            redToolStripMenuItem.Click += redToolStripMenuItem_Click;
+            // 
+            // yellowToolStripMenuItem
+            // 
+            yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
+            yellowToolStripMenuItem.Size = new Size(180, 22);
+            yellowToolStripMenuItem.Text = "Yellow";
+            yellowToolStripMenuItem.Click += yellowToolStripMenuItem_Click;
+            // 
+            // greenToolStripMenuItem
+            // 
+            greenToolStripMenuItem.Name = "greenToolStripMenuItem";
+            greenToolStripMenuItem.Size = new Size(180, 22);
+            greenToolStripMenuItem.Text = "Green";
+            greenToolStripMenuItem.Click += greenToolStripMenuItem_Click;
+            // 
+            // blueToolStripMenuItem
+            // 
+            blueToolStripMenuItem.Name = "blueToolStripMenuItem";
+            blueToolStripMenuItem.Size = new Size(180, 22);
+            blueToolStripMenuItem.Text = "Blue";
+            blueToolStripMenuItem.Click += blueToolStripMenuItem_Click;
+            // 
+            // pinkToolStripMenuItem
+            // 
+            pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
+            pinkToolStripMenuItem.Size = new Size(180, 22);
+            pinkToolStripMenuItem.Text = "Pink";
+            pinkToolStripMenuItem.Click += pinkToolStripMenuItem_Click;
+            // 
+            // whiteToolStripMenuItem
+            // 
+            whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
+            whiteToolStripMenuItem.Size = new Size(180, 22);
+            whiteToolStripMenuItem.Text = "White";
+            whiteToolStripMenuItem.Click += whiteToolStripMenuItem_Click;
+            // 
             // TMP
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -254,9 +342,10 @@
             Controls.Add(loadButton);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "TMP";
-            Text = "TMP";
+            FormClosed += TMP_FormClosed;
+            ResizeEnd += TMP_ResizeEnd;
             MouseUp += playlist_MouseUp;
-            Resize += Msplayer_Resize;
+            Resize += TMP_Resize;
             ((System.ComponentModel.ISupportInitialize)Volume).EndInit();
             ((System.ComponentModel.ISupportInitialize)time).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -286,5 +375,16 @@
         private ToolStripMenuItem queueToolStripMenuItem;
         private ToolStripMenuItem autorepeatToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
+        private ToolStripMenuItem colorsToolStripMenuItem;
+        private ToolStripMenuItem redToolStripMenuItem;
+        private ToolStripMenuItem yellowToolStripMenuItem;
+        private ToolStripMenuItem greenToolStripMenuItem;
+        private ToolStripMenuItem blueToolStripMenuItem;
+        private ToolStripMenuItem pinkToolStripMenuItem;
+        private ToolStripMenuItem whiteToolStripMenuItem;
+        private ToolStripMenuItem sizeToolStripMenuItem;
+        private ToolStripMenuItem defaultToolStripMenuItem;
+        private ToolStripMenuItem bigToolStripMenuItem;
+        private ToolStripMenuItem smallToolStripMenuItem;
     }
 }

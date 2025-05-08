@@ -10,6 +10,9 @@ namespace TMP
         private string index;
         private string image;
         private string data;
+        private string color;
+        private string width;
+        private string height;
 
         #endregion
 
@@ -23,7 +26,7 @@ namespace TMP
         private bool is_autorepeat;
 
         private Size orgSize;
-        Rectangle[] rects = new Rectangle[11];
+        private Rectangle[] rects = new Rectangle[11];
         public TMP()
         {
             InitializeComponent();
@@ -34,6 +37,9 @@ namespace TMP
             index = Path.Combine(Application.LocalUserAppDataPath, "index");
             image = Path.Combine(Application.LocalUserAppDataPath, "image");
             data = Path.Combine(Application.LocalUserAppDataPath, "data");
+            color = Path.Combine(Application.LocalUserAppDataPath, "color");
+            width = Path.Combine(Application.LocalUserAppDataPath, "width");
+            height = Path.Combine(Application.LocalUserAppDataPath, "height");
 
             #endregion
 
@@ -145,9 +151,52 @@ namespace TMP
                 dur.Text = afr.TotalTime.ToString("mm\\:ss");
                 curTime.Text = afr.CurrentTime.ToString("mm\\:ss");
             }
+
+            try
+            {
+                using StreamReader reader = new StreamReader(color);
+                string line = reader.ReadLine()!;
+
+                switch (line)
+                {
+                    case "red":
+                        BackColor = Color.IndianRed;
+                        break;
+                    case "yellow":
+                        BackColor = Color.LightYellow;
+                        break;
+                    case "green":
+                        BackColor = Color.LightGreen;
+                        break;
+                    case "blue":
+                        BackColor = Color.LightBlue;
+                        break;
+                    case "pink":
+                        BackColor = Color.LightPink;
+                        break;
+                    case "white":
+                        BackColor = Color.White;
+                        break;
+                }
+            }
+            catch (FileNotFoundException) { }
+
+            try
+            {
+                using (StreamReader reader1 = new StreamReader(width))
+                {
+                    int w = int.Parse(reader1.ReadLine()!);
+                    Width = w;
+                }
+
+                using StreamReader reader2 = new StreamReader(height);
+                int h = int.Parse(reader2.ReadLine()!);
+                Height = h;
+            }
+            catch (FileNotFoundException) { }
         }
 
-        private void Msplayer_Resize(object sender, EventArgs e)
+        private void TMP_Resize(object sender, EventArgs e)
         {
             resize(loadButton, rects[0]);
             resize(playButton, rects[1]);
@@ -160,6 +209,17 @@ namespace TMP
             resize(dur, rects[8]);
             resize(slash, rects[9]);
             resize(pictureBox1, rects[10]);
+        }
+
+        private void TMP_ResizeEnd(object sender, EventArgs e)
+        {
+            using (StreamWriter writer1 = new StreamWriter(width))
+            {
+                writer1.WriteLine(Width);
+            }
+
+            using StreamWriter writer2 = new StreamWriter(height);
+            writer2.WriteLine(Height);
         }
 
         private void resize(Control c, Rectangle r)
@@ -176,7 +236,7 @@ namespace TMP
             c.Size = new Size(newWidth, newHeight);
         }
 
-        private void Msplayer_FormClosed(object sender, FormClosedEventArgs e)
+        private void TMP_FormClosed(object sender, FormClosedEventArgs e)
         {
             woe.Dispose();
             afr?.Dispose();
@@ -526,6 +586,96 @@ namespace TMP
                 is_queue = true;
                 is_autorepeat = false;
             }
+        }
+
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("red");
+
+            BackColor = Color.IndianRed;
+        }
+
+        private void yellowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("yellow");
+
+            BackColor = Color.LightYellow;
+        }
+
+        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("green");
+
+            BackColor = Color.LightGreen;
+        }
+
+        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("blue");
+
+            BackColor = Color.LightBlue;
+        }
+
+        private void pinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("pink");
+
+            BackColor = Color.LightPink;
+        }
+
+        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using StreamWriter sw = new StreamWriter(color);
+            sw.WriteLine("white");
+
+            BackColor = Color.White;
+        }
+
+        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Width = 500;
+            Height = 500;
+
+            using (StreamWriter writer1 = new StreamWriter(width))
+            {
+                writer1.WriteLine(Width);
+            }
+
+            using StreamWriter writer2 = new StreamWriter(height);
+            writer2.WriteLine(Height);
+        }
+
+        private void bigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Width = 700;
+            Height = 700;
+
+            using (StreamWriter writer1 = new StreamWriter(width))
+            {
+                writer1.WriteLine(Width);
+            }
+
+            using StreamWriter writer2 = new StreamWriter(height);
+            writer2.WriteLine(Height);
+        }
+
+        private void smallToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Width = 400;
+            Height = 400;
+
+            using (StreamWriter writer1 = new StreamWriter(width))
+            {
+                writer1.WriteLine(Width);
+            }
+
+            using StreamWriter writer2 = new StreamWriter(height);
+            writer2.WriteLine(Height);
         }
     }
 }

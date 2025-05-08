@@ -397,9 +397,13 @@ namespace TMP
 
                 try
                 {
-                    afr = new AudioFileReader(_list[playlist.SelectedIndex]);
+                    try
+                    {
+                        afr = new AudioFileReader(_list[playlist.SelectedIndex]);
 
-                    woe = new WaveOutEvent();
+                        woe = new WaveOutEvent();
+                    }
+                    catch (FileNotFoundException) { }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -418,13 +422,16 @@ namespace TMP
                     writer.Write(playlist.SelectedIndex);
                 }
 
-                woe.Init(afr);
-                woe.Play();
-
                 pauseButton.Enabled = true;
                 is_paused = false;
 
-                title.Text = Path.GetFileNameWithoutExtension(afr.FileName);
+                if (afr != null)
+                {
+                    woe.Init(afr);
+                    woe.Play();
+
+                    title.Text = Path.GetFileNameWithoutExtension(afr.FileName);
+                }
 
                 timer1.Enabled = true;
             }

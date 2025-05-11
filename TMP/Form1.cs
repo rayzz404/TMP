@@ -144,13 +144,14 @@ namespace TMP
             woe.Pause();
             is_paused = true;
 
-            if (afr != null)
+            try
             {
-                afr.CurrentTime = TimeSpan.FromSeconds(time.Value);
+                afr!.CurrentTime = TimeSpan.FromSeconds(time.Value);
 
                 dur.Text = afr.TotalTime.ToString("mm\\:ss");
                 curTime.Text = afr.CurrentTime.ToString("mm\\:ss");
             }
+            catch (NullReferenceException) { }
 
             try
             {
@@ -393,7 +394,11 @@ namespace TMP
                 woe.Stop();
                 woe.Dispose();
 
-                afr?.Dispose();
+                try
+                {
+                    afr!.Dispose();
+                }
+                catch (NullReferenceException) { }
 
                 try
                 {
@@ -485,10 +490,11 @@ namespace TMP
 
         private void time_Scroll(object sender, EventArgs e)
         {
-            if (afr != null)
+            try
             {
-                afr.CurrentTime = TimeSpan.FromSeconds(time.Value);
+                afr!.CurrentTime = TimeSpan.FromSeconds(time.Value);
             }
+            catch (NullReferenceException) { }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -683,6 +689,24 @@ namespace TMP
 
             using StreamWriter writer2 = new StreamWriter(height);
             writer2.WriteLine(Height);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+            form2.size.Click += ShowContextMenu2;
+            form2.colors.Click += ShowContextMenu3;
+        }
+
+        private void ShowContextMenu2(object? sender, EventArgs e)
+        {
+            contextMenuStrip2.Show(Cursor.Position);
+        }
+
+        private void ShowContextMenu3(object? sender, EventArgs e)
+        {
+            contextMenuStrip3.Show(Cursor.Position);
         }
     }
 }

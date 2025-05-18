@@ -1,6 +1,6 @@
 ﻿namespace TMP
 {
-    partial class Form2
+    partial class Settings
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             size = new Button();
             colors = new Button();
             SuspendLayout();
@@ -51,7 +51,7 @@
             colors.Text = "Colors";
             colors.UseVisualStyleBackColor = true;
             // 
-            // Form2
+            // Settings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -59,7 +59,7 @@
             Controls.Add(colors);
             Controls.Add(size);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form2";
+            Name = "Settings";
             Text = "Settings";
             ResumeLayout(false);
         }

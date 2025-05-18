@@ -54,25 +54,17 @@
             defaultToolStripMenuItem = new ToolStripMenuItem();
             bigToolStripMenuItem = new ToolStripMenuItem();
             smallToolStripMenuItem = new ToolStripMenuItem();
-            contextMenuStrip3 = new ContextMenuStrip(components);
-            redToolStripMenuItem = new ToolStripMenuItem();
-            yellowToolStripMenuItem = new ToolStripMenuItem();
-            greenToolStripMenuItem = new ToolStripMenuItem();
-            blueToolStripMenuItem = new ToolStripMenuItem();
-            pinkToolStripMenuItem = new ToolStripMenuItem();
-            whiteToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)Volume).BeginInit();
             ((System.ComponentModel.ISupportInitialize)time).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStrip1.SuspendLayout();
             contextMenuStrip2.SuspendLayout();
-            contextMenuStrip3.SuspendLayout();
             SuspendLayout();
             // 
             // loadButton
             // 
             loadButton.FlatStyle = FlatStyle.Popup;
-            loadButton.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loadButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loadButton.Location = new Point(12, 399);
             loadButton.Name = "loadButton";
             loadButton.Size = new Size(150, 50);
@@ -84,7 +76,7 @@
             // playButton
             // 
             playButton.FlatStyle = FlatStyle.Popup;
-            playButton.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            playButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             playButton.Location = new Point(168, 399);
             playButton.Name = "playButton";
             playButton.Size = new Size(150, 50);
@@ -96,7 +88,7 @@
             // pauseButton
             // 
             pauseButton.FlatStyle = FlatStyle.Popup;
-            pauseButton.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pauseButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pauseButton.Location = new Point(324, 399);
             pauseButton.Name = "pauseButton";
             pauseButton.Size = new Size(150, 50);
@@ -132,30 +124,30 @@
             // curTime
             // 
             curTime.AutoSize = true;
-            curTime.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            curTime.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             curTime.Location = new Point(12, 310);
             curTime.Name = "curTime";
-            curTime.Size = new Size(48, 18);
+            curTime.Size = new Size(38, 16);
             curTime.TabIndex = 5;
             curTime.Text = "00:00";
             // 
             // slash
             // 
             slash.AutoSize = true;
-            slash.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            slash.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             slash.Location = new Point(57, 310);
             slash.Name = "slash";
-            slash.Size = new Size(16, 18);
+            slash.Size = new Size(11, 16);
             slash.TabIndex = 6;
             slash.Text = "/";
             // 
             // dur
             // 
             dur.AutoSize = true;
-            dur.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dur.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dur.Location = new Point(71, 310);
             dur.Name = "dur";
-            dur.Size = new Size(48, 18);
+            dur.Size = new Size(38, 16);
             dur.TabIndex = 7;
             dur.Text = "00:00";
             // 
@@ -173,7 +165,7 @@
             // 
             // title
             // 
-            title.Font = new Font("Roboto Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            title.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             title.Location = new Point(257, 9);
             title.Name = "title";
             title.Size = new Size(212, 30);
@@ -184,12 +176,11 @@
             // 
             playlist.AllowDrop = true;
             playlist.BorderStyle = BorderStyle.None;
-            playlist.Font = new Font("Roboto Mono", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            playlist.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             playlist.FormattingEnabled = true;
-            playlist.ItemHeight = 18;
             playlist.Location = new Point(257, 42);
             playlist.Name = "playlist";
-            playlist.Size = new Size(217, 252);
+            playlist.Size = new Size(217, 240);
             playlist.TabIndex = 10;
             playlist.DragDrop += playlist_DragDrop;
             playlist.DragEnter += playlist_DragEnter;
@@ -259,76 +250,28 @@
             // 
             contextMenuStrip2.Items.AddRange(new ToolStripItem[] { defaultToolStripMenuItem, bigToolStripMenuItem, smallToolStripMenuItem });
             contextMenuStrip2.Name = "contextMenuStrip2";
-            contextMenuStrip2.Size = new Size(113, 70);
+            contextMenuStrip2.Size = new Size(181, 92);
             // 
             // defaultToolStripMenuItem
             // 
             defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
-            defaultToolStripMenuItem.Size = new Size(112, 22);
+            defaultToolStripMenuItem.Size = new Size(180, 22);
             defaultToolStripMenuItem.Text = "Default";
             defaultToolStripMenuItem.Click += defaultToolStripMenuItem_Click;
             // 
             // bigToolStripMenuItem
             // 
             bigToolStripMenuItem.Name = "bigToolStripMenuItem";
-            bigToolStripMenuItem.Size = new Size(112, 22);
+            bigToolStripMenuItem.Size = new Size(180, 22);
             bigToolStripMenuItem.Text = "Big";
             bigToolStripMenuItem.Click += bigToolStripMenuItem_Click;
             // 
             // smallToolStripMenuItem
             // 
             smallToolStripMenuItem.Name = "smallToolStripMenuItem";
-            smallToolStripMenuItem.Size = new Size(112, 22);
+            smallToolStripMenuItem.Size = new Size(180, 22);
             smallToolStripMenuItem.Text = "Small";
             smallToolStripMenuItem.Click += smallToolStripMenuItem_Click;
-            // 
-            // contextMenuStrip3
-            // 
-            contextMenuStrip3.Items.AddRange(new ToolStripItem[] { redToolStripMenuItem, yellowToolStripMenuItem, greenToolStripMenuItem, blueToolStripMenuItem, pinkToolStripMenuItem, whiteToolStripMenuItem });
-            contextMenuStrip3.Name = "contextMenuStrip3";
-            contextMenuStrip3.Size = new Size(181, 158);
-            // 
-            // redToolStripMenuItem
-            // 
-            redToolStripMenuItem.Name = "redToolStripMenuItem";
-            redToolStripMenuItem.Size = new Size(180, 22);
-            redToolStripMenuItem.Text = "Red";
-            redToolStripMenuItem.Click += redToolStripMenuItem_Click;
-            // 
-            // yellowToolStripMenuItem
-            // 
-            yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
-            yellowToolStripMenuItem.Size = new Size(180, 22);
-            yellowToolStripMenuItem.Text = "Yellow";
-            yellowToolStripMenuItem.Click += yellowToolStripMenuItem_Click;
-            // 
-            // greenToolStripMenuItem
-            // 
-            greenToolStripMenuItem.Name = "greenToolStripMenuItem";
-            greenToolStripMenuItem.Size = new Size(180, 22);
-            greenToolStripMenuItem.Text = "Green";
-            greenToolStripMenuItem.Click += greenToolStripMenuItem_Click;
-            // 
-            // blueToolStripMenuItem
-            // 
-            blueToolStripMenuItem.Name = "blueToolStripMenuItem";
-            blueToolStripMenuItem.Size = new Size(180, 22);
-            blueToolStripMenuItem.Text = "Blue";
-            blueToolStripMenuItem.Click += blueToolStripMenuItem_Click;
-            // 
-            // pinkToolStripMenuItem
-            // 
-            pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
-            pinkToolStripMenuItem.Size = new Size(180, 22);
-            pinkToolStripMenuItem.Text = "Pink";
-            pinkToolStripMenuItem.Click += pinkToolStripMenuItem_Click;
-            // 
-            // whiteToolStripMenuItem
-            // 
-            whiteToolStripMenuItem.Name = "whiteToolStripMenuItem";
-            whiteToolStripMenuItem.Size = new Size(180, 22);
-            whiteToolStripMenuItem.Text = "White";
-            whiteToolStripMenuItem.Click += whiteToolStripMenuItem_Click;
             // 
             // TMP
             // 
@@ -359,7 +302,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             contextMenuStrip2.ResumeLayout(false);
-            contextMenuStrip3.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -390,12 +332,5 @@
         private ToolStripMenuItem defaultToolStripMenuItem;
         private ToolStripMenuItem bigToolStripMenuItem;
         private ToolStripMenuItem smallToolStripMenuItem;
-        private ContextMenuStrip contextMenuStrip3;
-        private ToolStripMenuItem redToolStripMenuItem;
-        private ToolStripMenuItem yellowToolStripMenuItem;
-        private ToolStripMenuItem greenToolStripMenuItem;
-        private ToolStripMenuItem blueToolStripMenuItem;
-        private ToolStripMenuItem pinkToolStripMenuItem;
-        private ToolStripMenuItem whiteToolStripMenuItem;
     }
 }

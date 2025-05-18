@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TMP
 {
-    public partial class Settings : Form
+    public partial class ColorPalette : Form
     {
-        public Settings()
+        public ColorPalette()
         {
             InitializeComponent();
         }

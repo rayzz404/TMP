@@ -162,21 +162,27 @@ namespace TMP
                 {
                     case "red":
                         BackColor = Color.IndianRed;
+                        playlist.BackColor = Color.IndianRed;
                         break;
                     case "yellow":
                         BackColor = Color.LightYellow;
+                        playlist.BackColor = Color.LightYellow;
                         break;
                     case "green":
                         BackColor = Color.LightGreen;
+                        playlist.BackColor = Color.LightGreen;
                         break;
                     case "blue":
                         BackColor = Color.LightBlue;
+                        playlist.BackColor = Color.LightBlue;
                         break;
                     case "pink":
                         BackColor = Color.LightPink;
+                        playlist.BackColor = Color.LightPink;
                         break;
                     case "white":
                         BackColor = Color.White;
+                        playlist.BackColor = Color.White;
                         break;
                 }
             }
@@ -601,52 +607,58 @@ namespace TMP
             }
         }
 
-        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        private void red_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("red");
 
             BackColor = Color.IndianRed;
+            playlist.BackColor = Color.IndianRed;
         }
 
-        private void yellowToolStripMenuItem_Click(object sender, EventArgs e)
+        private void yellow_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("yellow");
 
             BackColor = Color.LightYellow;
+            playlist.BackColor = Color.LightYellow;
         }
 
-        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void green_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("green");
 
             BackColor = Color.LightGreen;
+            playlist.BackColor = Color.LightGreen;
         }
 
-        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        private void blue_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("blue");
 
             BackColor = Color.LightBlue;
+            playlist.BackColor = Color.LightBlue;
         }
 
-        private void pinkToolStripMenuItem_Click(object sender, EventArgs e)
+        private void pink_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("pink");
 
             BackColor = Color.LightPink;
+            playlist.BackColor = Color.LightPink;
         }
 
-        private void whiteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void white_Click(object? sender, EventArgs e)
         {
             using StreamWriter sw = new StreamWriter(color);
             sw.WriteLine("white");
 
             BackColor = Color.White;
+            playlist.BackColor = Color.White;
         }
 
         private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
@@ -693,10 +705,10 @@ namespace TMP
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
-            form2.size.Click += ShowContextMenu2;
-            form2.colors.Click += ShowContextMenu3;
+            Settings settings = new Settings();
+            settings.Show();
+            settings.size.Click += ShowContextMenu2;
+            settings.colors.Click += ShowColorPallete;
         }
 
         private void ShowContextMenu2(object? sender, EventArgs e)
@@ -704,9 +716,16 @@ namespace TMP
             contextMenuStrip2.Show(Cursor.Position);
         }
 
-        private void ShowContextMenu3(object? sender, EventArgs e)
+        private void ShowColorPallete(object? sender, EventArgs e)
         {
-            contextMenuStrip3.Show(Cursor.Position);
+            ColorPalette colorPalette = new ColorPalette();
+            colorPalette.Show();
+            colorPalette.red.Click += red_Click;
+            colorPalette.yellow.Click += yellow_Click;
+            colorPalette.green.Click += green_Click;
+            colorPalette.blue.Click += blue_Click;
+            colorPalette.pink.Click += pink_Click;
+            colorPalette.white.Click += white_Click;
         }
     }
 }

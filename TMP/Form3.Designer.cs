@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorPalette));
             red = new Button();
             yellow = new Button();
             green = new Button();
@@ -44,6 +45,7 @@
             red.Name = "red";
             red.Size = new Size(100, 100);
             red.TabIndex = 0;
+            red.TabStop = false;
             red.UseVisualStyleBackColor = false;
             // 
             // yellow
@@ -53,6 +55,7 @@
             yellow.Name = "yellow";
             yellow.Size = new Size(100, 100);
             yellow.TabIndex = 1;
+            yellow.TabStop = false;
             yellow.UseVisualStyleBackColor = false;
             // 
             // green
@@ -62,6 +65,7 @@
             green.Name = "green";
             green.Size = new Size(100, 100);
             green.TabIndex = 2;
+            green.TabStop = false;
             green.UseVisualStyleBackColor = false;
             // 
             // white
@@ -71,6 +75,7 @@
             white.Name = "white";
             white.Size = new Size(100, 100);
             white.TabIndex = 3;
+            white.TabStop = false;
             white.UseVisualStyleBackColor = false;
             // 
             // pink
@@ -80,6 +85,7 @@
             pink.Name = "pink";
             pink.Size = new Size(100, 100);
             pink.TabIndex = 4;
+            pink.TabStop = false;
             pink.UseVisualStyleBackColor = false;
             // 
             // blue
@@ -89,6 +95,7 @@
             blue.Name = "blue";
             blue.Size = new Size(100, 100);
             blue.TabIndex = 5;
+            blue.TabStop = false;
             blue.UseVisualStyleBackColor = false;
             // 
             // ColorPalette
@@ -102,6 +109,7 @@
             Controls.Add(green);
             Controls.Add(yellow);
             Controls.Add(red);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ColorPalette";
             Text = "Color Palette";
             ResumeLayout(false);

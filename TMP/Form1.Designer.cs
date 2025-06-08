@@ -69,6 +69,7 @@
             loadButton.Name = "loadButton";
             loadButton.Size = new Size(150, 50);
             loadButton.TabIndex = 0;
+            loadButton.TabStop = false;
             loadButton.Text = "load";
             loadButton.UseVisualStyleBackColor = true;
             loadButton.Click += loadButton_Click;
@@ -80,7 +81,8 @@
             playButton.Location = new Point(168, 399);
             playButton.Name = "playButton";
             playButton.Size = new Size(150, 50);
-            playButton.TabIndex = 1;
+            playButton.TabIndex = 0;
+            playButton.TabStop = false;
             playButton.Text = "play";
             playButton.UseVisualStyleBackColor = true;
             playButton.Click += playButton_Click;
@@ -92,7 +94,8 @@
             pauseButton.Location = new Point(324, 399);
             pauseButton.Name = "pauseButton";
             pauseButton.Size = new Size(150, 50);
-            pauseButton.TabIndex = 2;
+            pauseButton.TabIndex = 0;
+            pauseButton.TabStop = false;
             pauseButton.Text = "pause";
             pauseButton.UseVisualStyleBackColor = true;
             pauseButton.Click += pauseButton_Click;
@@ -104,7 +107,8 @@
             Volume.Maximum = 100;
             Volume.Name = "Volume";
             Volume.Size = new Size(462, 30);
-            Volume.TabIndex = 3;
+            Volume.TabIndex = 0;
+            Volume.TabStop = false;
             Volume.TickFrequency = 0;
             Volume.Value = 20;
             Volume.Scroll += Volume_Scroll;
@@ -116,7 +120,8 @@
             time.Maximum = 100;
             time.Name = "time";
             time.Size = new Size(462, 30);
-            time.TabIndex = 4;
+            time.TabIndex = 0;
+            time.TabStop = false;
             time.TickFrequency = 0;
             time.Value = 20;
             time.Scroll += time_Scroll;
@@ -169,7 +174,7 @@
             title.Location = new Point(257, 9);
             title.Name = "title";
             title.Size = new Size(212, 30);
-            title.TabIndex = 9;
+            title.TabIndex = 0;
             title.Text = "No playing";
             // 
             // playlist
@@ -181,7 +186,8 @@
             playlist.Location = new Point(257, 42);
             playlist.Name = "playlist";
             playlist.Size = new Size(217, 240);
-            playlist.TabIndex = 10;
+            playlist.TabIndex = 0;
+            playlist.TabStop = false;
             playlist.DragDrop += playlist_DragDrop;
             playlist.DragEnter += playlist_DragEnter;
             playlist.DoubleClick += playButton_Click;
@@ -250,26 +256,26 @@
             // 
             contextMenuStrip2.Items.AddRange(new ToolStripItem[] { defaultToolStripMenuItem, bigToolStripMenuItem, smallToolStripMenuItem });
             contextMenuStrip2.Name = "contextMenuStrip2";
-            contextMenuStrip2.Size = new Size(181, 92);
+            contextMenuStrip2.Size = new Size(113, 70);
             // 
             // defaultToolStripMenuItem
             // 
             defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
-            defaultToolStripMenuItem.Size = new Size(180, 22);
+            defaultToolStripMenuItem.Size = new Size(112, 22);
             defaultToolStripMenuItem.Text = "Default";
             defaultToolStripMenuItem.Click += defaultToolStripMenuItem_Click;
             // 
             // bigToolStripMenuItem
             // 
             bigToolStripMenuItem.Name = "bigToolStripMenuItem";
-            bigToolStripMenuItem.Size = new Size(180, 22);
+            bigToolStripMenuItem.Size = new Size(112, 22);
             bigToolStripMenuItem.Text = "Big";
             bigToolStripMenuItem.Click += bigToolStripMenuItem_Click;
             // 
             // smallToolStripMenuItem
             // 
             smallToolStripMenuItem.Name = "smallToolStripMenuItem";
-            smallToolStripMenuItem.Size = new Size(180, 22);
+            smallToolStripMenuItem.Size = new Size(112, 22);
             smallToolStripMenuItem.Text = "Small";
             smallToolStripMenuItem.Click += smallToolStripMenuItem_Click;
             // 
@@ -292,9 +298,11 @@
             Controls.Add(playButton);
             Controls.Add(loadButton);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             Name = "TMP";
             FormClosed += TMP_FormClosed;
             ResizeEnd += TMP_ResizeEnd;
+            KeyUp += TMP_KeyUp;
             MouseUp += playlist_MouseUp;
             Resize += TMP_Resize;
             ((System.ComponentModel.ISupportInitialize)Volume).EndInit();

@@ -727,5 +727,17 @@ namespace TMP
             colorPalette.pink.Click += pink_Click;
             colorPalette.white.Click += white_Click;
         }
+
+        private void TMP_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.Space)
+            {
+                pauseButton_Click(sender, e);
+            }
+            else if (e.KeyValue == (char)Keys.Escape)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+        }
     }
 }

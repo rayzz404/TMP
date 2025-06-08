@@ -7,18 +7,12 @@
 
 # Features
 
-🎧 Playlist: 
+🎧 You can save and load playlist of your music
 
-You can save and load playlist of your music
+🎨 You can pick any color(red, yellow, green, blue, pink, white) from settings>colors(RMB and click settings to open settings)
 
-🎨 Colors: 
+👾 You can resize this app how you want and choose different configuration from settings>size
 
-You can pick any color(red, yellow, green, blue, pink, white) from settings>colors(RMB and click settings to open settings)
+🖼 You can pick different image double clicking on the image 
 
-👾 Size: 
-
-You can resize this app how you want and choose different configuration from settings>size
-
-🖼 Image:
-
-You can pick different image double clicking on the image 
+🎼 You can add any music to your playlist from your computer 

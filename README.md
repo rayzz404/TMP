@@ -9,10 +9,12 @@
 
 🎧 You can save and load playlist of your music
 
-🎨 You can pick any color of this app(red, yellow, green, blue, pink, white) from settings>colors(RMB and click settings to open settings)
+🎨 You can pick any color of this app(red, yellow, green, blue, pink, white)
 
-👾 You can resize this app how you want and choose different configuration from settings>size
+👾 You can resize this app how you want and choose different configuration 
 
 🖼 You can pick different image double clicking on the image 
 
 🎼 You can add any music to your playlist from your computer 
+
+📂 You can also drag and drop music to your playlist

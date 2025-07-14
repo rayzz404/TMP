@@ -1,4 +1,4 @@
-using NAudio.Wave;
+﻿using NAudio.Wave;
 
 namespace TMP
 {
@@ -13,6 +13,7 @@ namespace TMP
         private string color;
         private string width;
         private string height;
+        private string lang;
 
         #endregion
 
@@ -26,7 +27,7 @@ namespace TMP
         private bool is_autorepeat;
 
         private Size orgSize;
-        private Rectangle[] rects = new Rectangle[11];
+        private Rectangle[] rects = [];
         public TMP()
         {
             InitializeComponent();
@@ -40,8 +41,24 @@ namespace TMP
             color = Path.Combine(Application.LocalUserAppDataPath, "color");
             width = Path.Combine(Application.LocalUserAppDataPath, "width");
             height = Path.Combine(Application.LocalUserAppDataPath, "height");
+            lang = Path.Combine(Application.LocalUserAppDataPath, "lang");
 
             #endregion
+
+            if (playlist.Items.Count == 0)
+            {
+                playButton.Enabled = false;
+            }
+
+            try
+            {
+                using StreamReader reader = new StreamReader(image);
+                pictureBox1.ImageLocation = reader.ReadLine();
+            }
+            catch (FileNotFoundException)
+            {
+                setStandartImage();
+            }
 
             woe = new WaveOutEvent();
 
@@ -201,6 +218,19 @@ namespace TMP
                 Height = h;
             }
             catch (FileNotFoundException) { }
+
+            try
+            {
+                using StreamReader reader = new StreamReader(lang);
+                string line = reader.ReadLine()!;
+                if (line == "ru")
+                {
+                    loadButton.Text = "загрузить";
+                    playButton.Text = "играть";
+                    pauseButton.Text = "пауза";
+                }
+            }
+            catch (FileNotFoundException) { }
         }
 
         private void TMP_Resize(object sender, EventArgs e)
@@ -278,6 +308,8 @@ namespace TMP
                 File.Delete(list);
             }
             catch (FileNotFoundException) { }
+
+            playButton.Enabled = false;
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -296,6 +328,11 @@ namespace TMP
                 }
 
                 playlist.Items.RemoveAt(playlist.SelectedIndex);
+
+                if (playlist.Items.Count == 0)
+                {
+                    playButton.Enabled = false;
+                }
             }
         }
 
@@ -357,6 +394,8 @@ namespace TMP
 
                     playlist.Items.Add(Path.GetFileNameWithoutExtension(lines));
                 }
+
+                playButton.Enabled = true;
             }
 
             ofd.Dispose();
@@ -389,6 +428,11 @@ namespace TMP
 
                         playlist.Items.Add(Path.GetFileNameWithoutExtension(ofd.FileNames[i]));
                     }
+                }
+
+                if (playlist.Items.Count > 0)
+                {
+                    playButton.Enabled = true;
                 }
             }
         }
@@ -424,8 +468,6 @@ namespace TMP
                     playlist.SelectedIndex = 0;
 
                     afr = new AudioFileReader(_list[playlist.SelectedIndex]);
-
-                    woe = new WaveOutEvent();
                 }
 
                 using (StreamWriter writer = new StreamWriter(index))
@@ -552,6 +594,8 @@ namespace TMP
                         _list.Add(files[i]);
 
                         playlist.Items.Add(Path.GetFileNameWithoutExtension(files[i].ToString()));
+
+                        playButton.Enabled = true;
                     }
                 }
             }
@@ -709,6 +753,7 @@ namespace TMP
             settings.Show();
             settings.size.Click += ShowContextMenu2;
             settings.colors.Click += ShowColorPallete;
+            settings.language.Click += ShowLanguages;
         }
 
         private void ShowContextMenu2(object? sender, EventArgs e)
@@ -728,6 +773,34 @@ namespace TMP
             colorPalette.white.Click += white_Click;
         }
 
+        private void ShowLanguages(object? sender, EventArgs e)
+        {
+            Languages languages = new Languages();
+            languages.Show();
+            languages.EN.Click += SetToEnglish;
+            languages.RU.Click += SetToRussian;
+        }
+
+        private void SetToEnglish(object? sender, EventArgs e)
+        {
+            loadButton.Text = "load";
+            playButton.Text = "play";
+            pauseButton.Text = "pause";
+
+            using StreamWriter streamWriter = new StreamWriter(lang);
+            streamWriter.WriteLine("en");
+        }
+
+        private void SetToRussian(object? sender, EventArgs e)
+        {
+            loadButton.Text = "загрузить";
+            playButton.Text = "играть";
+            pauseButton.Text = "пауза";
+
+            using StreamWriter streamWriter = new StreamWriter(lang);
+            streamWriter.WriteLine("ru");
+        }
+
         private void TMP_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyValue == (char)Keys.Space)
@@ -736,8 +809,32 @@ namespace TMP
             }
             else if (e.KeyValue == (char)Keys.Escape)
             {
-                this.WindowState = FormWindowState.Minimized;
+                WindowState = FormWindowState.Minimized;
             }
+        }
+
+        private void setStandartImage()
+        {
+            string path = Path.Combine(Application.StartupPath, "orgpic.png");
+
+            try
+            {
+                pictureBox1.ImageLocation = path;
+
+                using (StreamWriter writer = new StreamWriter(image))
+                {
+                    writer.Write(path);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show($"Image not found at {path}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void resetImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setStandartImage();
         }
     }
 }

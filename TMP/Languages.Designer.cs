@@ -1,6 +1,6 @@
 ﻿namespace TMP
 {
-    partial class Settings
+    partial class Languages
     {
         /// <summary>
         /// Required designer variable.
@@ -28,45 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
-            size = new Button();
-            colors = new Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Languages));
+            EN = new Button();
+            RU = new Button();
             SuspendLayout();
             // 
-            // size
+            // EN
             // 
-            size.Location = new Point(12, 12);
-            size.Name = "size";
-            size.Size = new Size(200, 81);
-            size.TabIndex = 0;
-            size.Text = "Size";
-            size.UseVisualStyleBackColor = true;
+            EN.FlatStyle = FlatStyle.Popup;
+            EN.Location = new Point(12, 12);
+            EN.Name = "EN";
+            EN.Size = new Size(150, 100);
+            EN.TabIndex = 0;
+            EN.Text = "EN";
+            EN.UseVisualStyleBackColor = true;
             // 
-            // colors
+            // RU
             // 
-            colors.Location = new Point(12, 99);
-            colors.Name = "colors";
-            colors.Size = new Size(200, 100);
-            colors.TabIndex = 1;
-            colors.Text = "Colors";
-            colors.UseVisualStyleBackColor = true;
+            RU.FlatStyle = FlatStyle.Popup;
+            RU.Location = new Point(184, 12);
+            RU.Name = "RU";
+            RU.Size = new Size(150, 100);
+            RU.TabIndex = 1;
+            RU.Text = "RU";
+            RU.UseVisualStyleBackColor = true;
             // 
-            // Settings
+            // Languages
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(234, 211);
-            Controls.Add(colors);
-            Controls.Add(size);
+            ClientSize = new Size(346, 134);
+            Controls.Add(RU);
+            Controls.Add(EN);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Settings";
-            Text = "Settings";
+            Name = "Languages";
+            ShowIcon = false;
+            Text = "Languages";
             ResumeLayout(false);
         }
 
         #endregion
 
-        public Button size;
-        public Button colors;
+        public Button EN;
+        public Button RU;
     }
 }

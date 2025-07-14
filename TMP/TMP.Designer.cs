@@ -39,6 +39,8 @@
             slash = new Label();
             dur = new Label();
             pictureBox1 = new PictureBox();
+            contextMenuStrip3 = new ContextMenuStrip(components);
+            resetImageToolStripMenuItem = new ToolStripMenuItem();
             title = new Label();
             playlist = new ListBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
@@ -57,6 +59,7 @@
             ((System.ComponentModel.ISupportInitialize)Volume).BeginInit();
             ((System.ComponentModel.ISupportInitialize)time).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            contextMenuStrip3.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             contextMenuStrip2.SuspendLayout();
             SuspendLayout();
@@ -158,6 +161,7 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.ContextMenuStrip = contextMenuStrip3;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(12, 9);
             pictureBox1.Name = "pictureBox1";
@@ -167,6 +171,19 @@
             pictureBox1.TabStop = false;
             pictureBox1.DoubleClick += pictureBox1_DoubleClick;
             pictureBox1.MouseUp += playlist_MouseUp;
+            // 
+            // contextMenuStrip3
+            // 
+            contextMenuStrip3.Items.AddRange(new ToolStripItem[] { resetImageToolStripMenuItem });
+            contextMenuStrip3.Name = "contextMenuStrip3";
+            contextMenuStrip3.Size = new Size(139, 26);
+            // 
+            // resetImageToolStripMenuItem
+            // 
+            resetImageToolStripMenuItem.Name = "resetImageToolStripMenuItem";
+            resetImageToolStripMenuItem.Size = new Size(138, 22);
+            resetImageToolStripMenuItem.Text = "Reset Image";
+            resetImageToolStripMenuItem.Click += resetImageToolStripMenuItem_Click;
             // 
             // title
             // 
@@ -308,6 +325,7 @@
             ((System.ComponentModel.ISupportInitialize)Volume).EndInit();
             ((System.ComponentModel.ISupportInitialize)time).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            contextMenuStrip3.ResumeLayout(false);
             contextMenuStrip1.ResumeLayout(false);
             contextMenuStrip2.ResumeLayout(false);
             ResumeLayout(false);
@@ -340,5 +358,7 @@
         private ToolStripMenuItem defaultToolStripMenuItem;
         private ToolStripMenuItem bigToolStripMenuItem;
         private ToolStripMenuItem smallToolStripMenuItem;
+        private ContextMenuStrip contextMenuStrip3;
+        private ToolStripMenuItem resetImageToolStripMenuItem;
     }
 }

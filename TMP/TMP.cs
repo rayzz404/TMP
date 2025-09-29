@@ -27,7 +27,7 @@ namespace TMP
         private bool is_autorepeat;
 
         private Size orgSize;
-        private Rectangle[] rects = [];
+        private Rectangle[] rects = new Rectangle[11];
         public TMP()
         {
             InitializeComponent();

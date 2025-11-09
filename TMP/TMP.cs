@@ -4,94 +4,67 @@ namespace TMP
 {
     public partial class TMP : Form
     {
-        #region files
-
         private string list;
-        private string index;
-        private string image;
-        private string data;
-        private string color;
-        private string width;
-        private string height;
-        private string lang;
-
-        #endregion
-
-        private List<string> _list;
+        private string cfg;
 
         private AudioFileReader? afr;
         private WaveOutEvent woe;
 
+        private bool is_queue = true;
         private bool is_paused;
-        private bool is_queue;
-        private bool is_autorepeat;
 
         private Size orgSize;
-        private Rectangle[] rects = new Rectangle[11];
-        public TMP()
+        private Rectangle[] rects = new Rectangle[12];
+
+        List<string> paths = [];
+
+        ToolTip tip = new();
+        void LockCtrls()
         {
-            InitializeComponent();
+            pauseButton.Enabled = false;
+            playButton.Enabled = false;
+            time.Enabled = false;
+        }
 
-            #region files
+        void LoadCfgs()
+        {
+            cfg = Path.Combine(Application.StartupPath, "config");
 
-            list = Path.Combine(Application.LocalUserAppDataPath, "list");
-            index = Path.Combine(Application.LocalUserAppDataPath, "index");
-            image = Path.Combine(Application.LocalUserAppDataPath, "image");
-            data = Path.Combine(Application.LocalUserAppDataPath, "data");
-            color = Path.Combine(Application.LocalUserAppDataPath, "color");
-            width = Path.Combine(Application.LocalUserAppDataPath, "width");
-            height = Path.Combine(Application.LocalUserAppDataPath, "height");
-            lang = Path.Combine(Application.LocalUserAppDataPath, "lang");
+            if (File.Exists(cfg))
+            {
+                using StreamReader reader = new StreamReader(cfg);
+                string line = reader.ReadLine();
 
-            #endregion
+                if (line == "0")
+                {
+                    is_queue = false;
+                }
+                else if (line == "1")
+                {
+                    is_queue = true;
+                }
+            }
+
+            list = Path.Combine(Application.StartupPath, "playlist");
+
+            if (File.Exists(list))
+            {
+                paths = File.ReadLines(list).ToList();
+            }
+
+            foreach (var path in paths)
+            {
+                playlist.Items.Add(Path.GetFileNameWithoutExtension(path));
+            }
 
             if (playlist.Items.Count == 0)
             {
-                playButton.Enabled = false;
+                LockCtrls();
             }
-
-            try
-            {
-                using StreamReader reader = new StreamReader(image);
-                pictureBox1.ImageLocation = reader.ReadLine();
-            }
-            catch (FileNotFoundException)
-            {
-                setStandartImage();
-            }
-
-            woe = new WaveOutEvent();
-
-            _list = new List<string>();
-
-            pauseButton.Enabled = false;
-
-            try
-            {
-                using StreamReader reader = new StreamReader(list);
-                string? lines;
-
-                while ((lines = reader.ReadLine()) != null)
-                {
-                    _list.Add(lines);
-
-                    playlist.Items.Add(Path.GetFileNameWithoutExtension(lines));
-                }
-            }
-            catch (FileNotFoundException) { }
-
-            try
-            {
-                using StreamReader reader = new StreamReader(index);
-                string line = reader.ReadLine()!;
-
-                try
-                {
-                    playlist.SelectedIndex = int.Parse(line);
-                }
-                catch (ArgumentOutOfRangeException) { }
-            }
-            catch (FileNotFoundException) { }
+        }
+        public TMP()
+        {
+            InitializeComponent();
 
             #region rectangles
 
@@ -103,136 +76,18 @@ namespace TMP
             rects[4] = new Rectangle(playlist.Location, playlist.Size);
             rects[5] = new Rectangle(title.Location, title.Size);
             rects[6] = new Rectangle(time.Location, time.Size);
-            rects[7] = new Rectangle(curTime.Location, curTime.Size);
-            rects[8] = new Rectangle(dur.Location, dur.Size);
+            rects[7] = new Rectangle(current_time.Location, current_time.Size);
+            rects[8] = new Rectangle(duration.Location, duration.Size);
             rects[9] = new Rectangle(slash.Location, slash.Size);
             rects[10] = new Rectangle(pictureBox1.Location, pictureBox1.Size);
+            rects[11] = new Rectangle(volumeLevel.Location, volumeLevel.Size);
 
             #endregion
 
-            try
-            {
-                using StreamReader reader = new StreamReader(image);
-                pictureBox1.ImageLocation = reader.ReadLine();
-            }
-            catch (FileNotFoundException) { }
+            woe = new WaveOutEvent();
 
-            try
-            {
-                using StreamReader reader = new StreamReader(data);
-                string line = reader.ReadLine()!;
-
-                Volume.Value = int.Parse(line);
-
-                int num = int.Parse(reader.ReadLine()!);
-                time.Maximum = num;
-
-                int num2 = int.Parse(reader.ReadLine()!);
-                time.Value = num2;
-
-                string line2 = reader.ReadLine()!;
-                if (line2 == "True")
-                {
-                    is_queue = true;
-                    is_autorepeat = false;
-                }
-                else
-                {
-                    is_queue = false;
-                    is_autorepeat = true;
-                }
-
-                string line3 = reader.ReadLine()!;
-                if (line3 == "True")
-                {
-                    is_queue = false;
-                    is_autorepeat = true;
-                }
-                else
-                {
-                    is_queue = true;
-                    is_autorepeat = false;
-                }
-            }
-            catch (FileNotFoundException) { }
-
-            _play();
-
-            woe.Pause();
-            is_paused = true;
-
-            try
-            {
-                afr!.CurrentTime = TimeSpan.FromSeconds(time.Value);
-
-                dur.Text = afr.TotalTime.ToString("mm\\:ss");
-                curTime.Text = afr.CurrentTime.ToString("mm\\:ss");
-            }
-            catch (NullReferenceException) { }
-
-            try
-            {
-                using StreamReader reader = new StreamReader(color);
-                string line = reader.ReadLine()!;
-
-                switch (line)
-                {
-                    case "red":
-                        BackColor = Color.IndianRed;
-                        playlist.BackColor = Color.IndianRed;
-                        break;
-                    case "yellow":
-                        BackColor = Color.LightYellow;
-                        playlist.BackColor = Color.LightYellow;
-                        break;
-                    case "green":
-                        BackColor = Color.LightGreen;
-                        playlist.BackColor = Color.LightGreen;
-                        break;
-                    case "blue":
-                        BackColor = Color.LightBlue;
-                        playlist.BackColor = Color.LightBlue;
-                        break;
-                    case "pink":
-                        BackColor = Color.LightPink;
-                        playlist.BackColor = Color.LightPink;
-                        break;
-                    case "white":
-                        BackColor = Color.White;
-                        playlist.BackColor = Color.White;
-                        break;
-                }
-            }
-            catch (FileNotFoundException) { }
-
-            try
-            {
-                using (StreamReader reader1 = new StreamReader(width))
-                {
-                    int w = int.Parse(reader1.ReadLine()!);
-                    Width = w;
-                }
-
-                using StreamReader reader2 = new StreamReader(height);
-                int h = int.Parse(reader2.ReadLine()!);
-                Height = h;
-            }
-            catch (FileNotFoundException) { }
-
-            try
-            {
-                using StreamReader reader = new StreamReader(lang);
-                string line = reader.ReadLine()!;
-                if (line == "ru")
-                {
-                    loadButton.Text = "загрузить";
-                    playButton.Text = "играть";
-                    pauseButton.Text = "пауза";
-                }
-            }
-            catch (FileNotFoundException) { }
+            LoadCfgs();
         }
-
         private void TMP_Resize(object sender, EventArgs e)
         {
             resize(loadButton, rects[0]);
@@ -242,27 +97,19 @@ namespace TMP
             resize(playlist, rects[4]);
             resize(title, rects[5]);
             resize(time, rects[6]);
-            resize(curTime, rects[7]);
-            resize(dur, rects[8]);
+            resize(current_time, rects[7]);
+            resize(duration, rects[8]);
             resize(slash, rects[9]);
             resize(pictureBox1, rects[10]);
+            resize(volumeLevel, rects[11]);
         }
 
-        private void TMP_ResizeEnd(object sender, EventArgs e)
-        {
-            using (StreamWriter writer1 = new StreamWriter(width))
-            {
-                writer1.WriteLine(Width);
-            }
-
-            using StreamWriter writer2 = new StreamWriter(height);
-            writer2.WriteLine(Height);
-        }
+        //some trick i've got from one yt video. ^C ^V
 
         private void resize(Control c, Rectangle r)
         {
-            float xRatio = (float)(this.Width) / (float)(orgSize.Width);
-            float yRatio = (float)(this.Height) / (float)(orgSize.Height);
+            float xRatio = Width / (float)(orgSize.Width);
+            float yRatio = Height / (float)(orgSize.Height);
             int newX = (int)(r.X * xRatio);
             int newY = (int)(r.Y * yRatio);
 
@@ -278,60 +125,44 @@ namespace TMP
             woe.Dispose();
             afr?.Dispose();
 
-            using StreamWriter writer = new StreamWriter(data);
-            writer.WriteLine(Volume.Value);
-            writer.WriteLine(time.Maximum);
-            writer.WriteLine(time.Value);
-            writer.WriteLine(is_queue);
-            writer.WriteLine(is_autorepeat);
+            using (StreamWriter writer = new StreamWriter(cfg))
+            {
+                if (is_queue)
+                {
+                    writer.WriteLine(1);
+                }
+                else
+                {
+                    writer.WriteLine(0);
+                }
+            }
+
+            using StreamWriter writer2 = new StreamWriter(list);
+
+            foreach (var path in paths)
+            {
+                writer2.WriteLine(path);
+            }
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (StreamWriter writer = new StreamWriter(list))
-            {
-                writer.Write(string.Empty);
-            }
-
-            _list.Clear();
+            LockCtrls();
 
             playlist.Items.Clear();
-
-            try
-            {
-                File.Delete(index);
-            }
-            catch (FileNotFoundException) { }
-
-            try
-            {
-                File.Delete(list);
-            }
-            catch (FileNotFoundException) { }
-
-            playButton.Enabled = false;
+            paths.Clear();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (playlist.SelectedIndex != -1)
-            {
-                using (StreamWriter writer = new StreamWriter(list))
-                {
-                    foreach (string line in _list)
-                    {
-                        if (line != _list[playlist.SelectedIndex])
-                        {
-                            writer.WriteLine(line);
-                        }
-                    }
-                }
-
+            { 
                 playlist.Items.RemoveAt(playlist.SelectedIndex);
+                paths.RemoveAt(playlist.SelectedIndex);
 
                 if (playlist.Items.Count == 0)
                 {
-                    playButton.Enabled = false;
+                    LockCtrls();
                 }
             }
         }
@@ -339,66 +170,38 @@ namespace TMP
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using SaveFileDialog sfd = new SaveFileDialog();
+
             sfd.Filter = "Text|*.txt";
-            sfd.FileName = "songs";
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                using (StreamWriter writer = new StreamWriter(sfd.FileName))
+                using StreamWriter writer = new StreamWriter(sfd.FileName);
+                foreach (string line in paths)
                 {
-                    foreach (string line in _list)
-                    {
-                        writer.WriteLine(line);
-                    }
+                    writer.WriteLine(line);
                 }
-
-                File.SetAttributes(sfd.FileName, FileAttributes.ReadOnly);
             }
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
-                Filter = "Text|*.txt"
-            };
+            using OpenFileDialog ofd = new OpenFileDialog();
+
+            ofd.Filter = "Text|*.txt";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                using StreamReader reader = new StreamReader(ofd.FileName);
-                string line = reader.ReadLine()!;
-
-                using StreamWriter writer = new StreamWriter(list);
-                if (!_list.Contains(line))
+                foreach (var name in ofd.FileNames)
                 {
-                    if (line.Contains('\\'))
-                    {
-                        if ((line.Contains(".mp3", StringComparison.OrdinalIgnoreCase) || line.Contains(".wav", StringComparison.OrdinalIgnoreCase)))
-                        {
-                            writer.WriteLine(line);
-
-                            _list.Add(line);
-
-                            playlist.Items.Add(Path.GetFileNameWithoutExtension(line));
-                        }
-                    }
+                    paths.Add(name);
+                    playlist.Items.Add(Path.GetFileNameWithoutExtension(name));
                 }
 
-                string? lines;
-
-                while ((lines = reader.ReadLine()) != null)
+                if (playlist.Items.Count != 0)
                 {
-                    writer.WriteLine(lines);
-
-                    _list.Add(lines);
-
-                    playlist.Items.Add(Path.GetFileNameWithoutExtension(lines));
+                    playButton.Enabled = true;
                 }
-
-                playButton.Enabled = true;
             }
-
-            ofd.Dispose();
         }
 
         private void playlist_MouseUp(object sender, MouseEventArgs e)
@@ -412,25 +215,20 @@ namespace TMP
         private void loadButton_Click(object sender, EventArgs e)
         {
             using OpenFileDialog ofd = new OpenFileDialog();
+
             ofd.Filter = "All|*.mp3;*.wav|Mp3|*.mp3|Wav|*.wav";
+
             ofd.Multiselect = true;
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                using StreamWriter writer = new StreamWriter(list, true);
-                for (int i = 0; i < ofd.FileNames.Length; i++)
+                foreach (var name in ofd.FileNames)
                 {
-                    if (!_list.Contains(ofd.FileNames[i]))
-                    {
-                        writer.WriteLine(ofd.FileNames[i]);
-
-                        _list.Add(ofd.FileNames[i]);
-
-                        playlist.Items.Add(Path.GetFileNameWithoutExtension(ofd.FileNames[i]));
-                    }
+                    paths.Add(name);
+                    playlist.Items.Add(Path.GetFileNameWithoutExtension(name));
                 }
 
-                if (playlist.Items.Count > 0)
+                if (playlist.Items.Count != 0)
                 {
                     playButton.Enabled = true;
                 }
@@ -439,82 +237,40 @@ namespace TMP
 
         private void _play()
         {
-            if (_list.Count != 0)
+            if (woe.PlaybackState == PlaybackState.Playing || woe.PlaybackState == PlaybackState.Paused)
             {
                 woe.Stop();
-                woe.Dispose();
+            }
 
-                try
-                {
-                    afr!.Dispose();
-                }
-                catch (NullReferenceException) { }
+            string path = paths[playlist.SelectedIndex];
 
-                try
-                {
-                    try
-                    {
-                        afr = new AudioFileReader(_list[playlist.SelectedIndex]);
+            if (File.Exists(path))
+            {
+                afr = new AudioFileReader(path);
 
-                        woe = new WaveOutEvent();
-                    }
-                    catch (FileNotFoundException) { }
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    afr?.Dispose();
-                    woe.Dispose();
+                woe.Init(afr);
+                woe.Play();
 
-                    playlist.SelectedIndex = 0;
+                timer1.Start();
 
-                    afr = new AudioFileReader(_list[playlist.SelectedIndex]);
-                }
-
-                using (StreamWriter writer = new StreamWriter(index))
-                {
-                    writer.Write(playlist.SelectedIndex);
-                }
-
-                pauseButton.Enabled = true;
-                is_paused = false;
-
-                if (afr != null)
-                {
-                    woe.Init(afr);
-                    woe.Play();
-
-                    title.Text = Path.GetFileNameWithoutExtension(afr.FileName);
-                }
-
-                timer1.Enabled = true;
+                title.Text = Path.GetFileNameWithoutExtension(afr.FileName);
+            }
+            else
+            {
+                MessageBox.Show($"The file {path} doesn't exist. It will be not played", "Error", MessageBoxButtons.OK);
+                paths.Remove(path);
+                playlist.Items.Remove(path);
             }
         }
 
         private void playButton_Click(object sender, EventArgs e)
         {
-            if (playlist.SelectedIndex != -1)
+            if (playlist.SelectedIndex == -1)
             {
-                _play();
+                playlist.SelectedIndex = 0;
             }
-            else
-            {
-                if (_list.Count != 0)
-                {
-                    try
-                    {
-                        using StreamReader reader = new StreamReader(index);
-                        string? line = reader.ReadLine();
 
-                        playlist.SelectedIndex = int.Parse(line!);
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        playlist.SelectedIndex = 0;
-                    }
-
-                    _play();
-                }
-            }
+            _play();
         }
 
         private void pauseButton_Click(object sender, EventArgs e)
@@ -534,15 +290,12 @@ namespace TMP
         private void Volume_Scroll(object sender, EventArgs e)
         {
             woe.Volume = Volume.Value / 100f;
+            volumeLevel.Text = $"{Volume.Value}%";
         }
 
         private void time_Scroll(object sender, EventArgs e)
         {
-            try
-            {
-                afr!.CurrentTime = TimeSpan.FromSeconds(time.Value);
-            }
-            catch (NullReferenceException) { }
+            afr!.CurrentTime = TimeSpan.FromSeconds(time.Value);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -550,55 +303,53 @@ namespace TMP
             time.Maximum = (int)afr!.TotalTime.TotalSeconds;
             time.Value = (int)afr.CurrentTime.TotalSeconds;
 
-            dur.Text = afr.TotalTime.ToString("mm\\:ss");
-            curTime.Text = afr.CurrentTime.ToString("mm\\:ss");
+            duration.Text = afr.TotalTime.ToString("mm\\:ss");
+            current_time.Text = afr.CurrentTime.ToString("mm\\:ss");
 
-            if (time.Value == time.Maximum && playlist.Items.Count > 0)
+            if (time.Value == time.Maximum)
             {
-                if (is_queue)
+                if (playlist.Items.Count != 0)
                 {
-                    using (StreamReader reader = new StreamReader(index))
+                    if (playlist.SelectedIndex == -1)
                     {
-                        int num = int.Parse(reader.ReadLine()!);
-
-                        if (num < playlist.Items.Count - 1)
+                        playlist.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        if (is_queue)
                         {
-                            playlist.SelectedIndex = num + 1;
+                            if (playlist.SelectedIndex < playlist.Items.Count - 1)
+                            {
+                                ++playlist.SelectedIndex;
+                            }
+                            else
+                            {
+                                playlist.SelectedIndex = 0;
+                            }
                         }
                     }
 
+                    timer1.Stop();
                     _play();
                 }
-                else if (is_autorepeat)
+                else
                 {
-                    playButton_Click(sender, e);
+                    LockCtrls();
+                    timer1.Stop();
                 }
             }
         }
 
         private void playlist_DragDrop(object sender, DragEventArgs e)
         {
-            var files = (string[])e.Data!.GetData(DataFormats.FileDrop)!;
-
-            for (int i = 0; i < files.Length; i++)
+            foreach (var file in (string[])e.Data!.GetData(DataFormats.FileDrop)!)
             {
-                if (!_list.Contains(files[i]))
-                {
-                    if (files[i].Contains(".mp3", StringComparison.OrdinalIgnoreCase) || files[i].Contains(".wav", StringComparison.OrdinalIgnoreCase))
-                    {
-                        using (StreamWriter writer = new StreamWriter(list, true))
-                        {
-                            writer.WriteLine(files[i]);
-                        }
+                paths.Add(file);
+                playlist.Items.Add(Path.GetFileNameWithoutExtension(file));
 
-                        _list.Add(files[i]);
-
-                        playlist.Items.Add(Path.GetFileNameWithoutExtension(files[i].ToString()));
-
-                        playButton.Enabled = true;
-                    }
-                }
+                playButton.Enabled = true;
             }
+
         }
 
         private void playlist_DragEnter(object sender, DragEventArgs e)
@@ -617,188 +368,7 @@ namespace TMP
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 pictureBox1.ImageLocation = ofd.FileName;
-
-                using StreamWriter writer = new StreamWriter(image);
-                writer.WriteLine(ofd.FileName);
             }
-        }
-
-        private void queueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!is_queue)
-            {
-                is_queue = true;
-                is_autorepeat = false;
-            }
-            else
-            {
-                is_queue = false;
-                is_autorepeat = true;
-            }
-        }
-
-        private void autorepeatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!is_autorepeat)
-            {
-                is_queue = false;
-                is_autorepeat = true;
-            }
-            else
-            {
-                is_queue = true;
-                is_autorepeat = false;
-            }
-        }
-
-        private void red_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("red");
-
-            BackColor = Color.IndianRed;
-            playlist.BackColor = Color.IndianRed;
-        }
-
-        private void yellow_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("yellow");
-
-            BackColor = Color.LightYellow;
-            playlist.BackColor = Color.LightYellow;
-        }
-
-        private void green_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("green");
-
-            BackColor = Color.LightGreen;
-            playlist.BackColor = Color.LightGreen;
-        }
-
-        private void blue_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("blue");
-
-            BackColor = Color.LightBlue;
-            playlist.BackColor = Color.LightBlue;
-        }
-
-        private void pink_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("pink");
-
-            BackColor = Color.LightPink;
-            playlist.BackColor = Color.LightPink;
-        }
-
-        private void white_Click(object? sender, EventArgs e)
-        {
-            using StreamWriter sw = new StreamWriter(color);
-            sw.WriteLine("white");
-
-            BackColor = Color.White;
-            playlist.BackColor = Color.White;
-        }
-
-        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Width = 500;
-            Height = 500;
-
-            using (StreamWriter writer1 = new StreamWriter(width))
-            {
-                writer1.WriteLine(Width);
-            }
-
-            using StreamWriter writer2 = new StreamWriter(height);
-            writer2.WriteLine(Height);
-        }
-
-        private void bigToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Width = 700;
-            Height = 700;
-
-            using (StreamWriter writer1 = new StreamWriter(width))
-            {
-                writer1.WriteLine(Width);
-            }
-
-            using StreamWriter writer2 = new StreamWriter(height);
-            writer2.WriteLine(Height);
-        }
-
-        private void smallToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Width = 400;
-            Height = 400;
-
-            using (StreamWriter writer1 = new StreamWriter(width))
-            {
-                writer1.WriteLine(Width);
-            }
-
-            using StreamWriter writer2 = new StreamWriter(height);
-            writer2.WriteLine(Height);
-        }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Settings settings = new Settings();
-            settings.Show();
-            settings.size.Click += ShowContextMenu2;
-            settings.colors.Click += ShowColorPallete;
-            settings.language.Click += ShowLanguages;
-        }
-
-        private void ShowContextMenu2(object? sender, EventArgs e)
-        {
-            contextMenuStrip2.Show(Cursor.Position);
-        }
-
-        private void ShowColorPallete(object? sender, EventArgs e)
-        {
-            ColorPalette colorPalette = new ColorPalette();
-            colorPalette.Show();
-            colorPalette.red.Click += red_Click;
-            colorPalette.yellow.Click += yellow_Click;
-            colorPalette.green.Click += green_Click;
-            colorPalette.blue.Click += blue_Click;
-            colorPalette.pink.Click += pink_Click;
-            colorPalette.white.Click += white_Click;
-        }
-
-        private void ShowLanguages(object? sender, EventArgs e)
-        {
-            Languages languages = new Languages();
-            languages.Show();
-            languages.EN.Click += SetToEnglish;
-            languages.RU.Click += SetToRussian;
-        }
-
-        private void SetToEnglish(object? sender, EventArgs e)
-        {
-            loadButton.Text = "load";
-            playButton.Text = "play";
-            pauseButton.Text = "pause";
-
-            using StreamWriter streamWriter = new StreamWriter(lang);
-            streamWriter.WriteLine("en");
-        }
-
-        private void SetToRussian(object? sender, EventArgs e)
-        {
-            loadButton.Text = "загрузить";
-            playButton.Text = "играть";
-            pauseButton.Text = "пауза";
-
-            using StreamWriter streamWriter = new StreamWriter(lang);
-            streamWriter.WriteLine("ru");
         }
 
         private void TMP_KeyUp(object sender, KeyEventArgs e)
@@ -813,28 +383,44 @@ namespace TMP
             }
         }
 
-        private void setStandartImage()
+        private void switchModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = Path.Combine(Application.StartupPath, "orgpic.png");
-
-            try
+            if (!is_queue)
             {
-                pictureBox1.ImageLocation = path;
+                is_queue = true;
 
-                using (StreamWriter writer = new StreamWriter(image))
-                {
-                    writer.Write(path);
-                }
+                tip.Show("Mode: Queue", playlist, 1500);
             }
-            catch (FileNotFoundException)
+            else
             {
-                MessageBox.Show($"Image not found at {path}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                is_queue = false;
+
+                tip.Show("Mode: Repeat", playlist, 1500);
             }
         }
 
-        private void resetImageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void playlist_DoubleClick(object sender, EventArgs e)
         {
-            setStandartImage();
+            if (playlist.Items.Count != 0)
+            {
+                if (playlist.SelectedIndex == -1)
+                {
+                    playlist.SelectedIndex = 0;
+                }
+
+                _play();
+            }
+        }
+
+        private void defaultSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Width = 500;
+            Height = 500;
+        }
+
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            tip.Show("Select picture", pictureBox1, 1500);
         }
     }
 }
